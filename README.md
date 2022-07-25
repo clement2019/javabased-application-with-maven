@@ -23,17 +23,55 @@ Step 5: Install Suggested Plugins.
 
 ssh -i "devopskey.pem" ubuntu@ec2-3-8-154-188.eu-west-2.compute.amazonaws.com
  
-for jenkins_slave01
+--------SETUP JENKINS MASTER---------
+- Install JDK 8
+$ apt update
 
-=================================
-### java home directory below
+$ apt install -y openjdk-8-jdk
 
-ls  /usr/lib/jvm/java-8-openjdk-amd64
+- Add the repository key to the system:
+- 
+$ wget -q -O - https://pkg.jenkins.io/debian-stable/jenkins.io.key | sudo apt-key add -
 
+- Append the Debian package repository:
+- 
+$ sh -c 'echo deb https://pkg.jenkins.io/debian-stable binary/ > 
+
+    /etc/apt/sources.list.d/jenkins.list'
+
+- Install Jenkins Package
+- 
+$ apt update
+
+$ apt install -y jenkins
+
+- Status of Jenkins
+
+$ systemctl status jenkins
+
+- Generate SSH Key
+- 
+$ ssh-keygen -t rsa
+
+------ SETUP JENKINS SLAVE----
+- Install JDK 8
+- 
+$ apt update
+
+$ apt install -y openjdk-8-jdk
+
+- Setup Passwordless SSH between Jenkins Master & Slave
+- 
+Take the content of ~/.ssh/id_rsa.pub (as ubuntu user) from master
+
+Put it in ~/.ssh/authorized_keys on slave as ubuntu user
 
 ls -1  /etc/alternatives/java
+
 ### you now install maven into the path below, when installed using ansible adhoc commands using 
+
 EXPORT it will be found in the downloads path below 
+
  the code for the export is :
 
 ls  /opt
